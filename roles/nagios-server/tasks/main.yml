@@ -22,7 +22,7 @@
 - include: build-plugins.yml
 
 - name: Activate Nagios site on Ubuntu 16.04
-  file: src=/etc/apache2/conf-available/nagios.conf dest=/etc/apache2/conf-enabled/nagios.conf state=link owner=root group=root
+  file: src=/etc/apache2/sites-available/nagios.conf dest=/etc/apache2/sites-enabled/nagios.conf state=link owner=root group=root
   notify: restart apache
   when: ansible_os_family == 'Ubuntu'
 

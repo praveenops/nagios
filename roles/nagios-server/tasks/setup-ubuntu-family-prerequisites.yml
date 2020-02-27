@@ -13,13 +13,14 @@
    - libapache2-mod-php7.0
    - unzip
    - fcgiwrap
-
-- name: Install Nagios prerequisites for Ubuntu
-  apt: pkg={{ item }} state=present
-  with_items:
    - build-essential
    - python-passlib
+   - python-urllib3
 
+- name: Enable CGI
+  shell: |
+    a2enmod cgi
+  notify: restart apache
 
 - name: Install Plugin prerequisites for Debian family
   apt: pkg={{ item }} state=present
@@ -32,7 +33,3 @@
    - smbclient
    - gawk
 
-- name: Install ansible prerequisites for Debian family
-  apt: pkg={{ item }} state=present
-  with_items:
-   - python-urllib3
