@@ -1,0 +1,6 @@
+# Ex 1: Ungrouped hosts, specify before any group headers.
+
+[linux]
+192.168.56.122 ansible_connection=ssh  ansible_user=ubuntu ansible_ssh_pass=1234
+
+

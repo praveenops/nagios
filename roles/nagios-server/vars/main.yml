@@ -1,0 +1,6 @@
+---
+# vars file for nagios
+apache_service: apache2
+apache_user: www-data
+download_dir: /tmp
+ansible_os_family: Ubuntu

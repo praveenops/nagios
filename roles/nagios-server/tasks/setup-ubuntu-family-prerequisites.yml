@@ -1,0 +1,38 @@
+---
+
+- name: Update apt cache
+  apt: update_cache=yes
+  changed_when: False
+
+- name: install apache
+  apt: pkg={{ item }} state=present
+  with_items:
+   - apache2
+   - php7.0-gd
+   - libgd2-xpm-dev
+   - libapache2-mod-php7.0
+   - unzip
+   - fcgiwrap
+
+- name: Install Nagios prerequisites for Ubuntu
+  apt: pkg={{ item }} state=present
+  with_items:
+   - build-essential
+   - python-passlib
+
+
+- name: Install Plugin prerequisites for Debian family
+  apt: pkg={{ item }} state=present
+  with_items:
+   - libssl-dev
+   - dnsutils
+   - fping
+   - libldap2-dev
+   - libpq-dev
+   - smbclient
+   - gawk
+
+- name: Install ansible prerequisites for Debian family
+  apt: pkg={{ item }} state=present
+  with_items:
+   - python-urllib3

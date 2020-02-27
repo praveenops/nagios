@@ -1,0 +1,34 @@
+---
+# tasks file for nagios
+
+- name: Ensure download directory is present
+  file: path={{ download_dir }} state=directory
+
+
+- include: setup-ubuntu-family-prerequisites.yml
+  when: ansible_os_family == 'Ubuntu'
+
+- name: Create nagcmd group
+  group: name={{ monitoring_command_group }} state=present
+
+- name: Create nagios user
+  user: name={{ monitoring_user }} state=present groups={{ monitoring_command_group }}
+
+- name: Add apache user to nagcmd group
+  user: name={{ apache_user }} state=present groups={{ monitoring_command_group }}
+
+- include: build-nagios.yml
+
+- include: build-plugins.yml
+
+- name: Activate Nagios site on Ubuntu 16.04
+  file: src=/etc/apache2/conf-available/nagios.conf dest=/etc/apache2/conf-enabled/nagios.conf state=link owner=root group=root
+  notify: restart apache
+  when: ansible_os_family == 'Ubuntu'
+
+- name: Fix Nagios startup on Ubuntu
+  shell: cd /etc/rc2.d && ln -s ../init.d/nagios S18nagios creates=/etc/rc2.d/S18nagios
+  when: ansible_os_family == 'Ubuntu'
+
+- name: http service state
+  service: name={{ apache_service }} state=started enabled=yes
